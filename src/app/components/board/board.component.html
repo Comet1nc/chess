@@ -1,0 +1,14 @@
+<div class="container">
+  <div *ngFor="let rank of ranks; let i = index" class="rank">
+    <div *ngFor="let file of files; let j = index" class="file">
+      <div
+        class="cell"
+        [ngStyle]="{
+          'background-color': (i + 1 * j) % 2 === 0 ? '#cecece' : '#737373'
+        }"
+      >
+        <app-piece [piece]="getPiece(rank, file)"></app-piece>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+.container {
+  display: block;
+
+  .rank {
+    display: flex;
+  }
+
+  .file {
+    display: flex;
+  }
+
+  .cell {
+    background-color: #737373;
+    width: 80px;
+    height: 80px;
+    color: #000000;
+  }
+}
