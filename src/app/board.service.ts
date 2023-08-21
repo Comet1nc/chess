@@ -8,12 +8,20 @@ import { Knight } from './models/piece/knight.model';
 import { Rook } from './models/piece/rook.model';
 import { Bishop } from './models/piece/bishop.model';
 import { Queen } from './models/piece/queen.model';
+import { King } from './models/piece/king.model';
+import { Board } from './models/board.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
-  pieces = new Map<string, Pawn>();
+  board = new Board();
+  public get pieces() {
+    return this.board.pieces;
+  }
+  public set pieces(value) {
+    this.board.pieces = value;
+  }
 
   constructor() {
     this.setupDefaultPiecePositions();
@@ -21,11 +29,7 @@ export class BoardService {
 
   setPiece(coordinates: Coordinates, piece: Piece) {
     piece.coordinates = coordinates;
-    this.pieces.set(this.coordinatesToString(coordinates), piece);
-  }
-
-  private coordinatesToString(coordinates: Coordinates) {
-    return coordinates.file + coordinates.rank;
+    this.pieces.set(this.board.coordinatesToString(coordinates), piece);
   }
 
   setupDefaultPiecePositions() {
@@ -104,9 +108,19 @@ export class BoardService {
       new Coordinates('D', 8),
       new Queen(Color.BLACK, new Coordinates('D', 8))
     );
+
+    // SET QUEENS
+    this.setPiece(
+      new Coordinates('E', 1),
+      new King(Color.WHITE, new Coordinates('E', 1))
+    );
+    this.setPiece(
+      new Coordinates('E', 8),
+      new King(Color.BLACK, new Coordinates('E', 8))
+    );
   }
 
-  getPiece(coordinates: Coordinates) {
-    return this.pieces.get(this.coordinatesToString(coordinates));
-  }
+  // getPiece(coordinates: Coordinates) {
+  //   return this.pieces.get(this.board.coordinatesToString(coordinates));
+  // }
 }

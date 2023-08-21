@@ -1,9 +1,12 @@
 import { Color } from '../color.model';
+import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';
 import { Piece } from './piece.model';
 
-export class Queen implements Piece {
-  name = 'default';
+export class Queen extends Piece {
   sprite = this.color === Color.WHITE ? '&#x2655;' : '&#x265B;';
-  constructor(public color: Color, public coordinates: Coordinates) {}
+
+  override getPieceMoves(): CoordinatesShift[] {
+    throw new Error('Method not implemented.');
+  }
 }

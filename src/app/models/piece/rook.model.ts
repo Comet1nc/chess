@@ -1,9 +1,11 @@
 import { Color } from '../color.model';
+import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';
 import { Piece } from './piece.model';
 
-export class Rook implements Piece {
-  name = 'default';
+export class Rook extends Piece {
   sprite = this.color === Color.WHITE ? '&#x2656;' : '&#x265C;';
-  constructor(public color: Color, public coordinates: Coordinates) {}
+  override getPieceMoves(): CoordinatesShift[] {
+    throw new Error('Method not implemented.');
+  }
 }
