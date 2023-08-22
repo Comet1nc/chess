@@ -6,21 +6,37 @@ import { Pawn } from './piece/pawn.model';
 import { Map as myMap } from 'immutable';
 
 export class Board {
+  // Map<Coordinates.toString(), Piece>()
   pieces = new Map<string, Piece>();
 
   getPiece(coordinates: Coordinates) {
-    return this.pieces.get(this.coordinatesToString(coordinates));
-  }
-
-  coordinatesToString(coordinates: Coordinates) {
-    return coordinates.file + coordinates.rank;
+    return this.pieces.get(coordinates.toString());
   }
 
   isSquareEmpty(coordinates: Coordinates): boolean {
-    if (this.pieces.get(this.coordinatesToString(coordinates))) {
+    if (this.pieces.get(coordinates.toString())) {
       return false;
     } else {
       return true;
     }
+  }
+
+  removePiece(coordinates: Coordinates): void {
+    this.pieces.delete(coordinates.toString());
+  }
+
+  movePiece(from: Coordinates, to: Coordinates) {
+    const piece = this.getPiece(from);
+
+    if (!piece) return;
+
+    this.removePiece(from);
+
+    this.setPiece(to, piece);
+  }
+
+  setPiece(coordinates: Coordinates, piece: Piece) {
+    piece.coordinates = coordinates;
+    this.pieces.set(coordinates.toString(), piece);
   }
 }

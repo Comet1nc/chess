@@ -21,4 +21,8 @@ export class Coordinates {
 
     return true;
   }
+
+  toString() {
+    return this.file + this.rank;
+  }
 }

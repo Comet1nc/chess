@@ -23,98 +23,113 @@ export class BoardService {
     this.board.pieces = value;
   }
 
+  isWhiteToMove: boolean = true;
+  selectedPiece: Piece | undefined;
+
   constructor() {
     this.setupDefaultPiecePositions();
   }
 
-  setPiece(coordinates: Coordinates, piece: Piece) {
-    piece.coordinates = coordinates;
-    this.pieces.set(this.board.coordinatesToString(coordinates), piece);
+  selectPiece(piece: Piece | undefined) {
+    if (this.selectedPiece) {
+      this.selectedPiece.selected$.next(false);
+    }
+    if (!piece) {
+      this.selectedPiece = piece;
+      return;
+    }
+
+    piece.selected$.next(true);
+    this.selectedPiece = piece;
+
+    this.projectPossibleMoves();
   }
+
+  projectPossibleMoves() {}
 
   setupDefaultPiecePositions() {
     // SET PAWNS
     for (const fileKey of files) {
-      this.setPiece(
+      this.board.setPiece(
         new Coordinates(fileKey, 2),
         new Pawn(Color.WHITE, new Coordinates(fileKey, 2))
       );
-      this.setPiece(
+      this.board.setPiece(
         new Coordinates(fileKey, 7),
         new Pawn(Color.BLACK, new Coordinates(fileKey, 7))
       );
     }
 
     // SET ROOK
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('A', 1),
       new Rook(Color.WHITE, new Coordinates('A', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('H', 1),
       new Rook(Color.WHITE, new Coordinates('H', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('A', 8),
       new Rook(Color.BLACK, new Coordinates('A', 8))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('H', 8),
       new Rook(Color.BLACK, new Coordinates('H', 8))
     );
 
     // SET KNIGHT
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('B', 1),
       new Knight(Color.WHITE, new Coordinates('B', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('G', 1),
       new Knight(Color.WHITE, new Coordinates('G', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('B', 8),
       new Knight(Color.BLACK, new Coordinates('B', 8))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('G', 8),
       new Knight(Color.BLACK, new Coordinates('G', 8))
     );
 
     // SET BISHOP
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('C', 1),
       new Bishop(Color.WHITE, new Coordinates('C', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('F', 1),
       new Bishop(Color.WHITE, new Coordinates('F', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('C', 8),
       new Bishop(Color.BLACK, new Coordinates('C', 8))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('F', 8),
       new Bishop(Color.BLACK, new Coordinates('F', 8))
     );
 
     // SET QUEENS
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('D', 1),
       new Queen(Color.WHITE, new Coordinates('D', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('D', 8),
       new Queen(Color.BLACK, new Coordinates('D', 8))
     );
 
     // SET QUEENS
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('E', 1),
       new King(Color.WHITE, new Coordinates('E', 1))
     );
-    this.setPiece(
+    this.board.setPiece(
       new Coordinates('E', 8),
       new King(Color.BLACK, new Coordinates('E', 8))
     );

@@ -6,8 +6,12 @@
         [ngStyle]="{
           'background-color': (i + 1 * j) % 2 === 0 ? '#cecece' : '#737373'
         }"
+        (click)="moveHereSelectedPiece(rank, file)"
       >
-        <app-piece [piece]="getPiece(rank, file)"></app-piece>
+        <app-piece
+          *ngIf="getPiece(rank, file)"
+          [piece]="getPiece(rank, file)"
+        ></app-piece>
       </div>
     </div>
   </div>

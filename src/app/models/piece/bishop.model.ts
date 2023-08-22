@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { Color } from '../color.model';
 import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';

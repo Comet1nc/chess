@@ -1,1 +1,6 @@
-<div class="sprite" *ngIf="piece" [innerHTML]="piece.sprite"></div>
+<div
+  class="sprite"
+  [ngStyle]="{ 'background-color': onSelectedColor$ | async }"
+  [innerHTML]="piece.sprite"
+  (click)="selectPiece()"
+></div>

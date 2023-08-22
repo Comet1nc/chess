@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/internal/Subject';
 import { Board } from '../board.model';
 import { Color } from '../color.model';
 import { CoordinatesShift } from '../coordinates-shift.model';
@@ -5,6 +6,7 @@ import { Coordinates } from '../coordinates.model';
 
 export abstract class Piece {
   abstract sprite: string;
+  selected$ = new Subject<boolean>();
   constructor(public color: Color, public coordinates: Coordinates) {}
 
   getAvailableMoveSquares(board: Board): Coordinates[] {
