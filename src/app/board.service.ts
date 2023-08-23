@@ -32,15 +32,14 @@ export class BoardService {
 
   selectPiece(piece: Piece | undefined) {
     if (this.selectedPiece) {
-      this.selectedPiece.selected$.next(false);
-    }
-    if (!piece) {
-      this.selectedPiece = piece;
-      return;
+      this.selectedPiece.selected = false;
     }
 
-    piece.selected$.next(true);
     this.selectedPiece = piece;
+
+    if (!piece) return;
+
+    piece.selected = true;
 
     this.projectPossibleMoves();
   }
@@ -134,8 +133,4 @@ export class BoardService {
       new King(Color.BLACK, new Coordinates('E', 8))
     );
   }
-
-  // getPiece(coordinates: Coordinates) {
-  //   return this.pieces.get(this.board.coordinatesToString(coordinates));
-  // }
 }

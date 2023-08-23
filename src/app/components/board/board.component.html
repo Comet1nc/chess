@@ -1,3 +1,7 @@
+<h2
+  class="move"
+  [innerText]="boardService.isWhiteToMove ? 'White move' : 'Black move'"
+></h2>
 <div class="container">
   <div *ngFor="let rank of ranks; let i = index" class="rank">
     <div *ngFor="let file of files; let j = index" class="file">

@@ -1,6 +1,6 @@
 <div
   class="sprite"
-  [ngStyle]="{ 'background-color': onSelectedColor$ | async }"
+  [ngStyle]="{ 'background-color': piece.selected ? '#b3daff9e' : 'unset' }"
   [innerHTML]="piece.sprite"
   (click)="selectPiece()"
 ></div>

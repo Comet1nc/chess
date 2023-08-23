@@ -17,26 +17,16 @@ import { Piece } from 'src/app/models/piece/piece.model';
   templateUrl: './piece.component.html',
   styleUrls: ['./piece.component.scss'],
 })
-export class PieceComponent implements OnInit {
+export class PieceComponent {
   @Input() piece!: Piece;
-  // to do change detection
-
-  onSelectedColor$!: Observable<string>;
 
   constructor(private boardService: BoardService) {}
 
-  ngOnInit(): void {
-    this.onSelectedColor$ = this.piece.selected$.pipe(
-      map((selected: boolean) => (selected ? '#b3daff9e' : 'unset'))
-    );
-  }
-
   selectPiece() {
-    const moveAsWhite = this.piece?.color === Color.WHITE;
-
-    if (this.boardService.isWhiteToMove && moveAsWhite) {
+    if (this.boardService.isWhiteToMove && this.piece?.color === Color.WHITE) {
       this.boardService.selectPiece(this.piece);
-    } else if (!this.boardService.isWhiteToMove && !moveAsWhite) {
+    }
+    if (!this.boardService.isWhiteToMove && this.piece?.color === Color.BLACK) {
       this.boardService.selectPiece(this.piece);
     }
   }

@@ -1,5 +1,14 @@
+.move {
+  text-align: center;
+  margin: 0;
+  font-size: 45px;
+}
+
 .container {
   display: block;
+  margin: 0 auto;
+  width: 640px;
+
 
   .rank {
     display: flex;

@@ -14,47 +14,36 @@ export class BoardComponent {
   readonly ranks: Rank[] = ranks.reverse() as Rank[];
   readonly files: File[] = files;
 
-  constructor(private BoardService: BoardService) {}
+  constructor(public boardService: BoardService) {}
 
   getPiece(rank: Rank, file: File) {
-    return this.BoardService.board.getPiece(
+    return this.boardService.board.getPiece(
       new Coordinates(file, rank)
     ) as Piece;
   }
 
   moveHereSelectedPiece(rank: Rank, file: File) {
     const to = new Coordinates(file, rank);
-    if (!this.BoardService.selectedPiece) return;
+    if (!this.boardService.selectedPiece) return;
 
-    const canMove = this.BoardService.selectedPiece
-      .getAvailableMoveSquares(this.BoardService.board)
+    const canMove = this.boardService.selectedPiece
+      .getAvailableMoveSquares(this.boardService.board)
       .find((cords) => cords.file === to.file && cords.rank === to.rank);
 
-    const enemyIsHere = this.BoardService.board.getPiece(to);
+    const enemyIsHere = this.boardService.board.getPiece(to);
 
     if (canMove) {
       if (enemyIsHere) {
-        this.BoardService.board.removePiece(to);
+        this.boardService.board.removePiece(to);
       }
 
-      this.BoardService.board.movePiece(
-        this.BoardService.selectedPiece.coordinates,
+      this.boardService.board.movePiece(
+        this.boardService.selectedPiece.coordinates,
         to
       );
-      this.BoardService.selectedPiece = undefined;
-      console.log('log2');
+      this.boardService.selectPiece(undefined);
+
+      this.boardService.isWhiteToMove = !this.boardService.isWhiteToMove;
     }
-
-    console.log(this.BoardService.selectedPiece);
-
-    console.log(
-      this.BoardService.selectedPiece?.getAvailableMoveSquares(
-        this.BoardService.board
-      )
-    );
-
-    console.log(to);
-
-    console.log(canMove);
   }
 }

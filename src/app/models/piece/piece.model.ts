@@ -6,7 +6,7 @@ import { Coordinates } from '../coordinates.model';
 
 export abstract class Piece {
   abstract sprite: string;
-  selected$ = new Subject<boolean>();
+  selected: boolean = false;
   constructor(public color: Color, public coordinates: Coordinates) {}
 
   getAvailableMoveSquares(board: Board): Coordinates[] {
