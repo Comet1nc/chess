@@ -23,10 +23,10 @@ export class PieceComponent {
   constructor(private boardService: BoardService) {}
 
   selectPiece() {
-    if (this.boardService.isWhiteToMove && this.piece?.color === Color.WHITE) {
+    if (this.boardService.isWhiteMove && this.piece?.color === Color.WHITE) {
       this.boardService.selectPiece(this.piece);
     }
-    if (!this.boardService.isWhiteToMove && this.piece?.color === Color.BLACK) {
+    if (!this.boardService.isWhiteMove && this.piece?.color === Color.BLACK) {
       this.boardService.selectPiece(this.piece);
     }
   }

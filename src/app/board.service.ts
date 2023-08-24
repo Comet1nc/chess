@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Coordinates } from './models/coordinates.model';
 import { Pawn } from './models/piece/pawn.model';
 import { Piece } from './models/piece/piece.model';
-import { files } from './models/file.model';
+import { File, files } from './models/file.model';
 import { Color } from './models/color.model';
 import { Knight } from './models/piece/knight.model';
 import { Rook } from './models/piece/rook.model';
@@ -10,12 +10,13 @@ import { Bishop } from './models/piece/bishop.model';
 import { Queen } from './models/piece/queen.model';
 import { King } from './models/piece/king.model';
 import { Board } from './models/board.model';
+import { Rank, ranks } from './models/rank.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
-  board = new Board();
+  board: Board;
   public get pieces() {
     return this.board.pieces;
   }
@@ -23,11 +24,44 @@ export class BoardService {
     this.board.pieces = value;
   }
 
-  isWhiteToMove: boolean = true;
+  isWhiteMove: boolean = true;
   selectedPiece: Piece | undefined;
 
   constructor() {
-    this.setupDefaultPiecePositions();
+    // this.setupDefaultPiecePositions();
+
+    this.board = this.createBoardFromFen(
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR asdasd'
+    );
+  }
+
+  createBoardFromFen(fen: string) {
+    let board = new Board();
+
+    const parts = fen.split(' ');
+    const piecePositions = parts[0];
+    const fenRows = piecePositions.split('/');
+    for (let i = 0; i < fenRows.length; i++) {
+      const row = fenRows[i];
+      const rank = 8 - i;
+      let fileIndex = 0;
+
+      for (let j = 0; j < row.length; j++) {
+        const fenChar = row.charAt(j);
+
+        if (Number.parseInt(fenChar)) {
+          fileIndex += Number.parseInt(fenChar);
+        } else {
+          const file = files[fileIndex];
+          const cords = new Coordinates(file, rank as Rank);
+
+          board.setPiece(cords, new Pawn(Color.WHITE, cords));
+          fileIndex++;
+        }
+      }
+    }
+
+    return board;
   }
 
   selectPiece(piece: Piece | undefined) {

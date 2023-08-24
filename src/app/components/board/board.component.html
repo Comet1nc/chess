@@ -1,6 +1,6 @@
 <h2
   class="move"
-  [innerText]="boardService.isWhiteToMove ? 'White move' : 'Black move'"
+  [innerText]="boardService.isWhiteMove ? 'White move' : 'Black move'"
 ></h2>
 <div class="container">
   <div *ngFor="let rank of ranks; let i = index" class="rank">
@@ -8,7 +8,7 @@
       <div
         class="cell"
         [ngStyle]="{
-          'background-color': (i + 1 * j) % 2 === 0 ? '#cecece' : '#737373'
+          'background-color': isCellWhite(i, j) ? '#cecece' : '#737373'
         }"
         (click)="moveHereSelectedPiece(rank, file)"
       >

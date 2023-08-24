@@ -22,6 +22,10 @@ export class BoardComponent {
     ) as Piece;
   }
 
+  isCellWhite(i: number, j: number) {
+    return (i + 1 * j) % 2 === 0;
+  }
+
   moveHereSelectedPiece(rank: Rank, file: File) {
     const to = new Coordinates(file, rank);
     if (!this.boardService.selectedPiece) return;
@@ -43,7 +47,7 @@ export class BoardComponent {
       );
       this.boardService.selectPiece(undefined);
 
-      this.boardService.isWhiteToMove = !this.boardService.isWhiteToMove;
+      this.boardService.isWhiteMove = !this.boardService.isWhiteMove;
     }
   }
 }
