@@ -11,6 +11,7 @@ import { Queen } from './models/piece/queen.model';
 import { King } from './models/piece/king.model';
 import { Board } from './models/board.model';
 import { Rank, ranks } from './models/rank.model';
+import { PieceFen } from './models/piece-fen.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,12 +28,12 @@ export class BoardService {
   isWhiteMove: boolean = true;
   selectedPiece: Piece | undefined;
 
+  readonly defaultBoardFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+
   constructor() {
     // this.setupDefaultPiecePositions();
 
-    this.board = this.createBoardFromFen(
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR asdasd'
-    );
+    this.board = this.createBoardFromFen('3k4/8/5n2/2N5/3B4/8/8/3K4');
   }
 
   createBoardFromFen(fen: string) {
@@ -55,13 +56,45 @@ export class BoardService {
           const file = files[fileIndex];
           const cords = new Coordinates(file, rank as Rank);
 
-          board.setPiece(cords, new Pawn(Color.WHITE, cords));
+          board.setPiece(
+            cords,
+            this.pieceFromFenChar(fenChar as PieceFen, cords)
+          );
           fileIndex++;
         }
       }
     }
 
     return board;
+  }
+
+  pieceFromFenChar(fen: PieceFen, cords: Coordinates): Piece {
+    switch (fen) {
+      case 'p':
+        return new Pawn(Color.BLACK, cords);
+      case 'P':
+        return new Pawn(Color.WHITE, cords);
+      case 'r':
+        return new Rook(Color.BLACK, cords);
+      case 'R':
+        return new Rook(Color.WHITE, cords);
+      case 'n':
+        return new Knight(Color.BLACK, cords);
+      case 'N':
+        return new Knight(Color.WHITE, cords);
+      case 'b':
+        return new Bishop(Color.BLACK, cords);
+      case 'B':
+        return new Bishop(Color.WHITE, cords);
+      case 'q':
+        return new Queen(Color.BLACK, cords);
+      case 'Q':
+        return new Queen(Color.WHITE, cords);
+      case 'k':
+        return new King(Color.BLACK, cords);
+      case 'K':
+        return new King(Color.WHITE, cords);
+    }
   }
 
   selectPiece(piece: Piece | undefined) {
