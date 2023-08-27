@@ -28,9 +28,24 @@ export class Bishop extends Piece {
     coordinates: Coordinates,
     board: Board
   ): boolean {
-    return (
-      board.isSquareEmpty(coordinates) ||
-      board.getPiece(coordinates)?.color !== this.color
-    );
+    let result: boolean = super.isSquareAvailableForMove(coordinates, board);
+
+    if (result) {
+      // 1. get squares between current pos and target pos
+      // 2. check that square is free
+      let coordinatesBetween = board.getDiagonalCoordinatesBetween(
+        this.coordinates,
+        coordinates
+      );
+      for (let cords of coordinatesBetween) {
+        if (!board.isSquareEmpty(cords)) {
+          return false;
+        }
+      }
+
+      return true;
+    } else {
+      return false;
+    }
   }
 }

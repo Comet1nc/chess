@@ -8,7 +8,7 @@
       <div
         class="cell"
         [ngStyle]="{
-          'background-color': isCellWhite(i, j) ? '#cecece' : '#737373'
+          'background-color': cellBg([i, j], rank, file)
         }"
         (click)="moveHereSelectedPiece(rank, file)"
       >

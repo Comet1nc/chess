@@ -26,7 +26,23 @@ export class BoardComponent {
     return (i + 1 * j) % 2 === 0;
   }
 
+  cellBg(indexes: number[], rank: Rank, file: File) {
+    if (this.boardService.selectedPiece) {
+      const canMoveHere = this.boardService.selectedPiece
+        .getAvailableMoveSquares(this.boardService.board)
+        .find((cords) => cords.file === file && cords.rank === rank);
+
+      if (canMoveHere) {
+        return '#398fffa9';
+      }
+    }
+
+    return (indexes[0] + 1 * indexes[1]) % 2 === 0 ? '#cecece' : '#737373';
+  }
+
   moveHereSelectedPiece(rank: Rank, file: File) {
+    console.log('move here invoked');
+
     const to = new Coordinates(file, rank);
     if (!this.boardService.selectedPiece) return;
 

@@ -23,6 +23,7 @@ export class PieceComponent {
   constructor(private boardService: BoardService) {}
 
   selectPiece() {
+    console.log('select piece invoked');
     if (this.boardService.isWhiteMove && this.piece?.color === Color.WHITE) {
       this.boardService.selectPiece(this.piece);
     }

@@ -25,7 +25,7 @@ export abstract class Piece {
     return result;
   }
 
-  private isSquareAvailableForMove(
+  protected isSquareAvailableForMove(
     coordinates: Coordinates,
     board: Board
   ): boolean {
