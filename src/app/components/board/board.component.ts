@@ -41,10 +41,15 @@ export class BoardComponent {
   }
 
   moveHereSelectedPiece(rank: Rank, file: File) {
-    console.log('move here invoked');
-
     const to = new Coordinates(file, rank);
+
     if (!this.boardService.selectedPiece) return;
+
+    if (
+      this.boardService.selectedPiece.coordinates.file === to.file &&
+      this.boardService.selectedPiece.coordinates.rank === to.rank
+    )
+      return;
 
     const canMove = this.boardService.selectedPiece
       .getAvailableMoveSquares(this.boardService.board)

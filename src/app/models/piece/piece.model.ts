@@ -15,7 +15,6 @@ export abstract class Piece {
     for (let shift of this.getPieceMoves()) {
       if (this.coordinates.canShift(shift)) {
         let newCoordinates = this.coordinates.shift(shift);
-
         if (this.isSquareAvailableForMove(newCoordinates, board)) {
           result.push(newCoordinates);
         }

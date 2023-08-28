@@ -34,13 +34,8 @@ export class BoardService {
     // this.setupDefaultPiecePositions();
 
     this.board = this.createBoardFromFen('3k4/8/5n2/2N5/3B4/8/8/3K4');
-
-    console.log(
-      this.board.getDiagonalCoordinatesBetween(
-        new Coordinates('D', 4),
-        new Coordinates('B', 7)
-      )
-    );
+    // bishop test '3k4/8/5n2/2N5/3B4/8/8/3K4'
+    // rook test '3k4/8/p7/8/R7/8/P7/3K4'
   }
 
   createBoardFromFen(fen: string) {
