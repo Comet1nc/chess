@@ -85,8 +85,8 @@ export class Board {
       files.indexOf(source.file) < files.indexOf(target.file) ? 1 : -1;
 
     for (
-      let fileIndex = files.indexOf(source.file);
-      fileIndex !== files.indexOf(source.file);
+      let fileIndex = files.indexOf(source.file) + fileShift;
+      fileIndex !== files.indexOf(target.file);
       fileIndex += fileShift
     ) {
       result.push(new Coordinates(files[fileIndex], source.rank));

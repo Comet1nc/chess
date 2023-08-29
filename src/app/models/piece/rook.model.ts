@@ -4,10 +4,15 @@ import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';
 import { Piece } from './piece.model';
 import { Board } from '../board.model';
+import { LongRangePiece } from './long-range-piece.model';
 
-export class Rook extends Piece {
+export class Rook extends LongRangePiece {
   sprite = this.color === Color.WHITE ? '&#x2656;' : '&#x265C;';
   override getPieceMoves(): CoordinatesShift[] {
+    return Rook.getRookMoves();
+  }
+
+  static getRookMoves(): CoordinatesShift[] {
     let result: CoordinatesShift[] = [];
 
     // left to right
@@ -23,39 +28,5 @@ export class Rook extends Piece {
     }
 
     return result;
-  }
-
-  override isSquareAvailableForMove(
-    coordinates: Coordinates,
-    board: Board
-  ): boolean {
-    let result: boolean = super.isSquareAvailableForMove(coordinates, board);
-
-    if (result) {
-      // 1. get squares between current pos and target pos
-      // 2. check that square is free
-      let coordinatesBetween;
-      if (this.coordinates.file === coordinates.file) {
-        coordinatesBetween = board.getVerticalCoordinatesBetween(
-          this.coordinates,
-          coordinates
-        );
-      } else {
-        coordinatesBetween = board.getHorizontalCoordinatesBetween(
-          this.coordinates,
-          coordinates
-        );
-      }
-
-      for (let cords of coordinatesBetween) {
-        if (!board.isSquareEmpty(cords)) {
-          return false;
-        }
-      }
-
-      return true;
-    } else {
-      return false;
-    }
   }
 }

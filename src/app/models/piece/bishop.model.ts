@@ -4,10 +4,15 @@ import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';
 import { Piece } from './piece.model';
 import { Board } from '../board.model';
+import { LongRangePiece } from './long-range-piece.model';
 
-export class Bishop extends Piece {
+export class Bishop extends LongRangePiece {
   sprite = this.color === Color.WHITE ? '&#x2657;' : '&#x265D;';
   override getPieceMoves(): CoordinatesShift[] {
+    return Bishop.getBishopMoves();
+  }
+
+  static getBishopMoves(): CoordinatesShift[] {
     let result: CoordinatesShift[] = [];
     // bottom-left to top-right
     for (let i = -7; i <= 7; i++) {
@@ -22,30 +27,5 @@ export class Bishop extends Piece {
     }
 
     return result;
-  }
-
-  override isSquareAvailableForMove(
-    coordinates: Coordinates,
-    board: Board
-  ): boolean {
-    let result: boolean = super.isSquareAvailableForMove(coordinates, board);
-
-    if (result) {
-      // 1. get squares between current pos and target pos
-      // 2. check that square is free
-      let coordinatesBetween = board.getDiagonalCoordinatesBetween(
-        this.coordinates,
-        coordinates
-      );
-      for (let cords of coordinatesBetween) {
-        if (!board.isSquareEmpty(cords)) {
-          return false;
-        }
-      }
-
-      return true;
-    } else {
-      return false;
-    }
   }
 }
