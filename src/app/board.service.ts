@@ -33,10 +33,11 @@ export class BoardService {
   constructor() {
     // this.setupDefaultPiecePositions();
 
-    this.board = this.createBoardFromFen('3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4');
+    this.board = this.createBoardFromFen('1k6/6p1/5p2/4N3/2n3b1/3P2P1/2P5/6K1');
     // bishop test '3k4/8/5n2/2N5/3B4/8/8/3K4'
     // rook test '3k4/8/p7/8/R7/8/P7/3K4'
     // queen test '3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4'
+    // pawn test '1k6/6p1/5p2/4N3/2n3b1/3P2P1/2P5/6K1'
   }
 
   createBoardFromFen(fen: string) {
