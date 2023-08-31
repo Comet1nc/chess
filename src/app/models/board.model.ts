@@ -10,6 +10,33 @@ export class Board {
   // Map<Coordinates.toString(), Piece>()
   pieces = new Map<string, Piece>();
 
+  isSquareUnderAttackByColor(coordinates: Coordinates, color: Color) {
+    const pieces = this.getPiecesByColor(color);
+
+    for (const piece of pieces) {
+      const attackableSquares = piece.getAttackableSquares(this);
+
+      const condition = attackableSquares.find(
+        (cords) =>
+          cords.file === coordinates.file && cords.rank === coordinates.rank
+      );
+
+      if (condition) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  getPiecesByColor(color: Color) {
+    let result: Piece[] = [];
+    this.pieces.forEach((piece) => {
+      if (piece.color === color) result.push(piece);
+    });
+    return result;
+  }
+
   getPiece(coordinates: Coordinates) {
     return this.pieces.get(coordinates.toString());
   }

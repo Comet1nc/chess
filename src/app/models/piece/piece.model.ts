@@ -9,6 +9,31 @@ export abstract class Piece {
   selected: boolean = false;
   constructor(public color: Color, public coordinates: Coordinates) {}
 
+  getAttackableSquares(board: Board): Coordinates[] {
+    const pieceAttacks = this.getPieceAttacks();
+
+    let result: Coordinates[] = [];
+
+    for (const attack of pieceAttacks) {
+      if (this.coordinates.canShift(attack)) {
+        const shifted = this.coordinates.shift(attack);
+
+        if (this.isSquareAvailableForAttack(shifted, board)) {
+          result.push(shifted);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  protected isSquareAvailableForAttack(
+    coordinates: Coordinates,
+    board: Board
+  ): boolean {
+    return true;
+  }
+
   getAvailableMoveSquares(board: Board): Coordinates[] {
     let result: Coordinates[] = [];
 
@@ -32,6 +57,10 @@ export abstract class Piece {
       board.isSquareEmpty(coordinates) ||
       board.getPiece(coordinates)?.color !== this.color
     );
+  }
+
+  protected getPieceAttacks() {
+    return this.getPieceMoves();
   }
 
   abstract getPieceMoves(): CoordinatesShift[];

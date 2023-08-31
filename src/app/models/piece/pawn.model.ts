@@ -42,4 +42,12 @@ export class Pawn extends Piece {
       }
     }
   }
+
+  protected override getPieceAttacks(): CoordinatesShift[] {
+    if (this.color === Color.WHITE) {
+      return [new CoordinatesShift(-1, -1), new CoordinatesShift(1, -1)];
+    } else {
+      return [new CoordinatesShift(-1, 1), new CoordinatesShift(1, 1)];
+    }
+  }
 }

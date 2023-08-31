@@ -10,33 +10,40 @@ export abstract class LongRangePiece extends Piece {
     let result: boolean = super.isSquareAvailableForMove(coordinates, board);
 
     if (result) {
-      let coordinatesBetween;
-      if (this.coordinates.file === coordinates.file) {
-        coordinatesBetween = board.getVerticalCoordinatesBetween(
-          this.coordinates,
-          coordinates
-        );
-      } else if (this.coordinates.rank === coordinates.rank) {
-        coordinatesBetween = board.getHorizontalCoordinatesBetween(
-          this.coordinates,
-          coordinates
-        );
-      } else {
-        coordinatesBetween = board.getDiagonalCoordinatesBetween(
-          this.coordinates,
-          coordinates
-        );
-      }
-
-      for (let cords of coordinatesBetween) {
-        if (!board.isSquareEmpty(cords)) {
-          return false;
-        }
-      }
-
-      return true;
+      return this.isSquareAvailableForAttack(coordinates, board);
     } else {
       return false;
     }
+  }
+
+  override isSquareAvailableForAttack(
+    coordinates: Coordinates,
+    board: Board
+  ): boolean {
+    let coordinatesBetween;
+    if (this.coordinates.file === coordinates.file) {
+      coordinatesBetween = board.getVerticalCoordinatesBetween(
+        this.coordinates,
+        coordinates
+      );
+    } else if (this.coordinates.rank === coordinates.rank) {
+      coordinatesBetween = board.getHorizontalCoordinatesBetween(
+        this.coordinates,
+        coordinates
+      );
+    } else {
+      coordinatesBetween = board.getDiagonalCoordinatesBetween(
+        this.coordinates,
+        coordinates
+      );
+    }
+
+    for (let cords of coordinatesBetween) {
+      if (!board.isSquareEmpty(cords)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
