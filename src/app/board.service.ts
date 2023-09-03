@@ -18,32 +18,61 @@ import { PieceFen } from './models/piece-fen.model';
 })
 export class BoardService {
   board: Board;
-  public get pieces() {
-    return this.board.pieces;
-  }
-  public set pieces(value) {
-    this.board.pieces = value;
-  }
+  // public get pieces() {
+  //   return this.board.pieces;
+  // }
+  // public set pieces(value) {
+  //   this.board.pieces = value;
+  // }
 
   isWhiteMove: boolean = true;
   selectedPiece: Piece | undefined;
+  kingUnderAttack: boolean = false;
 
   readonly defaultBoardFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 
   constructor() {
     // this.setupDefaultPiecePositions();
 
-    this.board = this.createBoardFromFen('3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4');
+    this.board = this.createBoardFromFen('3k4/8/8/b7/8/8/2PK4/6N1');
     // bishop test '3k4/8/5n2/2N5/3B4/8/8/3K4'
     // rook test '3k4/8/p7/8/R7/8/P7/3K4'
     // queen test '3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4'
     // pawn test '1k6/6p1/5p2/4N3/2n3b1/3P2P1/2P5/6K1'
     // king test '8/8/4p3/8/4K3/8/4k3/8'
     // 'k7/8/4n3/8/4K3/8/8/8'
+    // '3k4/8/8/b7/8/8/2PK4/6N1'
+  }
+
+  copy(source: Board): Board {
+    let clone = this.createBoardFromFen(source.startingFen);
+
+    for (let move of source.movesHistory) {
+      clone.movePiece(move.from, move.to);
+    }
+
+    return clone;
+  }
+
+  validateIfKingInCheckAfterMove(
+    board: Board,
+    color: Color,
+    move: { from: Coordinates; to: Coordinates }
+  ) {
+    let copy = this.copy(board);
+    copy.movePiece(move.from, move.to);
+    let king = copy
+      .getPiecesByColor(color)
+      .find((piece) => piece instanceof King);
+    if (!king?.coordinates) return false;
+    return copy.isSquareUnderAttackByColor(
+      king?.coordinates,
+      Color.getOpposite(color)
+    );
   }
 
   createBoardFromFen(fen: string) {
-    let board = new Board();
+    let board = new Board(fen);
 
     const parts = fen.split(' ');
     const piecePositions = parts[0];
@@ -72,6 +101,51 @@ export class BoardService {
     }
 
     return board;
+  }
+
+  validateSelectedPieceMove(rank: Rank, file: File): boolean {
+    if (!this.selectedPiece) return false;
+
+    if (
+      this.selectedPiece.coordinates.file === file &&
+      this.selectedPiece.coordinates.rank === rank
+    )
+      return false;
+
+    if (
+      !this.selectedPiece
+        .getAvailableMoveSquares(this.board)
+        .find((cords) => cords.file === file && cords.rank === rank)
+    )
+      return false;
+
+    return true;
+  }
+
+  moveSelectedPiece(to: Coordinates) {
+    if (!this.selectedPiece) return;
+    if (!this.validateSelectedPieceMove(to.rank, to.file)) return;
+    this.kingUnderAttack = this.validateIfKingInCheckAfterMove(
+      this.board,
+      this.selectedPiece.color,
+      { from: this.selectedPiece.coordinates, to }
+    );
+
+    if (this.kingUnderAttack) {
+      console.log('king under attack / no move proceed');
+      return;
+    }
+
+    const enemyIsHere = this.board.getPiece(to);
+
+    if (enemyIsHere) {
+      this.board.removePiece(to);
+    }
+
+    this.board.movePiece(this.selectedPiece.coordinates, to);
+    this.selectPiece(undefined);
+
+    this.isWhiteMove = !this.isWhiteMove;
   }
 
   pieceFromFenChar(fen: PieceFen, cords: Coordinates): Piece {

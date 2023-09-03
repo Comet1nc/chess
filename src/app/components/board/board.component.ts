@@ -41,34 +41,6 @@ export class BoardComponent {
   }
 
   moveHereSelectedPiece(rank: Rank, file: File) {
-    const to = new Coordinates(file, rank);
-
-    if (!this.boardService.selectedPiece) return;
-
-    if (
-      this.boardService.selectedPiece.coordinates.file === to.file &&
-      this.boardService.selectedPiece.coordinates.rank === to.rank
-    )
-      return;
-
-    const canMove = this.boardService.selectedPiece
-      .getAvailableMoveSquares(this.boardService.board)
-      .find((cords) => cords.file === to.file && cords.rank === to.rank);
-
-    const enemyIsHere = this.boardService.board.getPiece(to);
-
-    if (canMove) {
-      if (enemyIsHere) {
-        this.boardService.board.removePiece(to);
-      }
-
-      this.boardService.board.movePiece(
-        this.boardService.selectedPiece.coordinates,
-        to
-      );
-      this.boardService.selectPiece(undefined);
-
-      this.boardService.isWhiteMove = !this.boardService.isWhiteMove;
-    }
+    this.boardService.moveSelectedPiece(new Coordinates(file, rank));
   }
 }

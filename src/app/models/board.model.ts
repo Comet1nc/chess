@@ -9,6 +9,12 @@ import { Rank, ranks } from './rank.model';
 export class Board {
   // Map<Coordinates.toString(), Piece>()
   pieces = new Map<string, Piece>();
+  startingFen: string;
+  movesHistory: { from: Coordinates; to: Coordinates }[] = [];
+
+  constructor(startingFen: string) {
+    this.startingFen = startingFen;
+  }
 
   isSquareUnderAttackByColor(coordinates: Coordinates, color: Color) {
     const pieces = this.getPiecesByColor(color);
@@ -61,6 +67,8 @@ export class Board {
     this.removePiece(from);
 
     this.setPiece(to, piece);
+
+    this.movesHistory.push({ from, to });
   }
 
   setPiece(coordinates: Coordinates, piece: Piece) {
