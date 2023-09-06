@@ -4,6 +4,7 @@ import { Color } from '../color.model';
 import { CoordinatesShift } from '../coordinates-shift.model';
 import { Coordinates } from '../coordinates.model';
 import { Piece } from './piece.model';
+import { files } from '../file.model';
 
 export class Pawn extends Piece {
   sprite = this.color === Color.WHITE ? '&#x2659;' : '&#x265F;';
@@ -33,7 +34,17 @@ export class Pawn extends Piece {
     board: Board
   ): boolean {
     if (coordinates.file === this.coordinates.file) {
-      return board.isSquareEmpty(coordinates);
+      let shift = Math.abs(this.coordinates.rank - coordinates.rank);
+      if (shift === 2) {
+        const between = board.getVerticalCoordinatesBetween(
+          this.coordinates,
+          coordinates
+        );
+
+        return board.isSquareEmpty(between[0]);
+      } else {
+        return board.isSquareEmpty(coordinates);
+      }
     } else {
       if (board.isSquareEmpty(coordinates)) {
         return false;

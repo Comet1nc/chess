@@ -1,6 +1,6 @@
 export enum Color {
-  WHITE,
-  BLACK,
+  WHITE = 'WHITE',
+  BLACK = 'BLACK',
 }
 
 export namespace Color {

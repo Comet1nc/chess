@@ -1,6 +1,8 @@
 <h2
   class="move"
-  [innerText]="boardService.isWhiteMove ? 'White move' : 'Black move'"
+  [innerText]="
+    boardService.colorToMove === 'WHITE' ? 'White move' : 'Black move'
+  "
 ></h2>
 <div class="container">
   <div *ngFor="let rank of ranks; let i = index" class="rank">

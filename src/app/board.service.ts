@@ -12,20 +12,17 @@ import { King } from './models/piece/king.model';
 import { Board } from './models/board.model';
 import { Rank, ranks } from './models/rank.model';
 import { PieceFen } from './models/piece-fen.model';
+import { GameService } from './game.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
   board: Board;
-  // public get pieces() {
-  //   return this.board.pieces;
-  // }
-  // public set pieces(value) {
-  //   this.board.pieces = value;
-  // }
 
-  isWhiteMove: boolean = true;
+  // isWhiteMove: boolean = true;
+  colorToMove: Color = Color.BLACK;
+
   selectedPiece: Piece | undefined;
   kingUnderAttack: boolean = false;
 
@@ -34,7 +31,7 @@ export class BoardService {
   constructor() {
     // this.setupDefaultPiecePositions();
 
-    this.board = this.createBoardFromFen('3k4/8/8/b7/8/8/2PK4/6N1');
+    this.board = this.createBoardFromFen('8/8/8/8/6p1/3k1pP1/3p1P2/3K3N');
     // bishop test '3k4/8/5n2/2N5/3B4/8/8/3K4'
     // rook test '3k4/8/p7/8/R7/8/P7/3K4'
     // queen test '3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4'
@@ -42,6 +39,7 @@ export class BoardService {
     // king test '8/8/4p3/8/4K3/8/4k3/8'
     // 'k7/8/4n3/8/4K3/8/8/8'
     // '3k4/8/8/b7/8/8/2PK4/6N1'
+    // pat white '8/8/8/8/6p1/3k1pP2/3K3N'
   }
 
   copy(source: Board): Board {
@@ -145,7 +143,8 @@ export class BoardService {
     this.board.movePiece(this.selectedPiece.coordinates, to);
     this.selectPiece(undefined);
 
-    this.isWhiteMove = !this.isWhiteMove;
+    // this.isWhiteMove = !this.isWhiteMove;
+    this.colorToMove = Color.getOpposite(this.colorToMove);
   }
 
   pieceFromFenChar(fen: PieceFen, cords: Coordinates): Piece {
