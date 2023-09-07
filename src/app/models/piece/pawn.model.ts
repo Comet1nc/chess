@@ -41,7 +41,9 @@ export class Pawn extends Piece {
           coordinates
         );
 
-        return board.isSquareEmpty(between[0]);
+        return (
+          board.isSquareEmpty(between[0]) && board.isSquareEmpty(coordinates)
+        );
       } else {
         return board.isSquareEmpty(coordinates);
       }

@@ -21,7 +21,7 @@ export class BoardService {
   board: Board;
 
   // isWhiteMove: boolean = true;
-  colorToMove: Color = Color.BLACK;
+  colorToMove: Color = Color.WHITE;
 
   selectedPiece: Piece | undefined;
   kingUnderAttack: boolean = false;
@@ -31,7 +31,9 @@ export class BoardService {
   constructor() {
     // this.setupDefaultPiecePositions();
 
-    this.board = this.createBoardFromFen('8/8/8/8/6p1/3k1pP1/3p1P2/3K3N');
+    this.board = this.createBoardFromFen(
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+    );
     // bishop test '3k4/8/5n2/2N5/3B4/8/8/3K4'
     // rook test '3k4/8/p7/8/R7/8/P7/3K4'
     // queen test '3k4/6r1/8/1P2Q3/8/6P1/4r3/3K4'
@@ -40,6 +42,7 @@ export class BoardService {
     // 'k7/8/4n3/8/4K3/8/8/8'
     // '3k4/8/8/b7/8/8/2PK4/6N1'
     // pat white '8/8/8/8/6p1/3k1pP2/3K3N'
+    // mat white 'k2r4/8/8/8/2P1P3/2PKP3/2PPP3/8'
   }
 
   copy(source: Board): Board {

@@ -50,5 +50,6 @@ export class BoardComponent implements OnInit {
 
   moveHereSelectedPiece(rank: Rank, file: File) {
     this.boardService.moveSelectedPiece(new Coordinates(file, rank));
+    this.gameService.updateGameState();
   }
 }
