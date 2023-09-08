@@ -6,8 +6,9 @@
 
 .container {
   display: block;
-  margin: 0 auto;
+  margin: calc((100vh - 640px) / 2) auto 0 auto;
   width: 640px;
+  transition: transform 0.4s ease-in-out;
 
 
   .rank {
@@ -20,6 +21,7 @@
 
   .cell {
     background-color: #737373;
+
     width: 80px;
     height: 80px;
     color: #000000;

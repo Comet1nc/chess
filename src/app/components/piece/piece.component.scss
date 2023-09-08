@@ -1,4 +1,8 @@
 .sprite {
   font-size: 60px;
   text-align: center;
+
+  &.black {
+    transform: rotate(180deg);
+  }
 }

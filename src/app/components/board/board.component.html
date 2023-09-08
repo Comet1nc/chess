@@ -1,10 +1,9 @@
-<h2
-  class="move"
-  [innerText]="
-    boardService.colorToMove === 'WHITE' ? 'White move' : 'Black move'
-  "
-></h2>
-<div class="container">
+<div
+  class="container"
+  [ngStyle]="{
+    transform: boardService.colorToMove === 'WHITE' ? '' : 'rotate(180deg)'
+  }"
+>
   <div *ngFor="let rank of ranks; let i = index" class="rank">
     <div *ngFor="let file of files; let j = index" class="file">
       <div

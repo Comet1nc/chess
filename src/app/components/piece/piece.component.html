@@ -1,6 +1,7 @@
 <div
   class="sprite"
   [ngStyle]="{ 'background-color': piece.selected ? '#b3daff9e' : 'unset' }"
+  [ngClass]="this.boardService.colorToMove === 'BLACK' ? 'black' : ''"
   [innerHTML]="piece.sprite"
   (click)="selectPiece()"
 ></div>

@@ -22,7 +22,7 @@ import { Piece } from 'src/app/models/piece/piece.model';
 export class PieceComponent {
   @Input() piece!: Piece;
 
-  constructor(private boardService: BoardService, private game: GameService) {}
+  constructor(public boardService: BoardService, private game: GameService) {}
 
   selectPiece() {
     if (this.game.gameState !== GameState.ONGOING) return;
