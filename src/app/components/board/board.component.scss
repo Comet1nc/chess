@@ -6,7 +6,8 @@
 
 .container {
   display: block;
-  margin: calc((100vh - 640px) / 2) auto 0 auto;
+  // margin: calc((100vh - 640px) / 2) auto 0 auto;
+  margin: 0 auto;
   width: 640px;
   transition: transform 0.4s ease-in-out;
 

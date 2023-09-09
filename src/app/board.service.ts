@@ -24,7 +24,7 @@ export class BoardService {
   colorToMove: Color = Color.WHITE;
 
   selectedPiece: Piece | undefined;
-  kingUnderAttack: boolean = false;
+  // kingUnderAttack: boolean = false;
 
   readonly defaultBoardFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 
@@ -126,13 +126,13 @@ export class BoardService {
   moveSelectedPiece(to: Coordinates) {
     if (!this.selectedPiece) return;
     if (!this.validateSelectedPieceMove(to.rank, to.file)) return;
-    this.kingUnderAttack = this.validateIfKingInCheckAfterMove(
+    const kingUnderAttack = this.validateIfKingInCheckAfterMove(
       this.board,
       this.selectedPiece.color,
       { from: this.selectedPiece.coordinates, to }
     );
 
-    if (this.kingUnderAttack) {
+    if (kingUnderAttack) {
       console.log('king under attack / no move proceed');
       return;
     }

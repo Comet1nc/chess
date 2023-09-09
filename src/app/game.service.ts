@@ -3,14 +3,14 @@ import { GameState } from './models/game-state.enum';
 import { BoardService } from './board.service';
 import { Color } from './models/color.model';
 import { King } from './models/piece/king.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
   gameState: GameState = GameState.ONGOING;
-  board = this.boardService.board;
-  currentMoveColor = this.boardService.colorToMove;
+  gameIsFinished$ = new Subject<boolean>();
 
   constructor(private boardService: BoardService) {}
 
@@ -19,14 +19,23 @@ export class GameService {
     this.checkMate();
   }
 
+  restartGame() {
+    this.boardService.board = this.boardService.createBoardFromFen(
+      this.boardService.defaultBoardFen
+    );
+    this.boardService.colorToMove = Color.WHITE;
+    this.gameState = GameState.ONGOING;
+    this.gameIsFinished$.next(false);
+  }
+
   checkMate() {
-    const king = this.board
-      .getPiecesByColor(this.currentMoveColor)
+    const king = this.boardService.board
+      .getPiecesByColor(this.boardService.colorToMove)
       .find((piece) => piece instanceof King);
 
     if (
       king !== undefined &&
-      !this.board.isSquareUnderAttackByColor(
+      !this.boardService.board.isSquareUnderAttackByColor(
         king?.coordinates,
         Color.getOpposite(king?.color)
       )
@@ -34,17 +43,19 @@ export class GameService {
       return;
     }
 
-    const pieces = this.board.getPiecesByColor(this.currentMoveColor);
+    const pieces = this.boardService.board.getPiecesByColor(
+      this.boardService.colorToMove
+    );
 
     for (const piece of pieces) {
-      const cords = piece.getAvailableMoveSquares(this.board);
+      const cords = piece.getAvailableMoveSquares(this.boardService.board);
 
       for (const cord of cords) {
-        const clone = this.boardService.copy(this.board);
+        const clone = this.boardService.copy(this.boardService.board);
         clone.movePiece(piece.coordinates, cord);
 
         const clonedKing = clone
-          .getPiecesByColor(this.currentMoveColor)
+          .getPiecesByColor(this.boardService.colorToMove)
           .find((piece) => piece instanceof King);
 
         if (
@@ -59,7 +70,7 @@ export class GameService {
       }
     }
 
-    if (this.currentMoveColor === Color.WHITE) {
+    if (this.boardService.colorToMove === Color.WHITE) {
       this.gameState = GameState.CHECKMATE_TO_WHITE_KING;
     } else {
       this.gameState = GameState.CHECKMATE_TO_BLACK_KING;
@@ -69,9 +80,11 @@ export class GameService {
   }
 
   checkStalemate() {
-    const pieces = this.board.getPiecesByColor(this.currentMoveColor);
+    const pieces = this.boardService.board.getPiecesByColor(
+      this.boardService.colorToMove
+    );
     for (let piece of pieces) {
-      let cords = piece.getAvailableMoveSquares(this.board);
+      let cords = piece.getAvailableMoveSquares(this.boardService.board);
       if (cords.length > 0) {
         return;
       }
@@ -83,5 +96,6 @@ export class GameService {
 
   finishGame() {
     console.log('game ended with state: ' + this.gameState);
+    this.gameIsFinished$.next(true);
   }
 }
